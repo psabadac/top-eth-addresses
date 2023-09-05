@@ -11,6 +11,8 @@ repositories {
 }
 
 dependencies {
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+    implementation("org.web3j:core:4.10.0")
     testImplementation(kotlin("test"))
 }
 
