@@ -1,7 +1,22 @@
-fun main(args: Array<String>) {
-    println("Hello World!")
+import kotlinx.coroutines.asCoroutineDispatcher
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import java.io.File
+import java.util.concurrent.Executors
 
-    // Try adding program arguments via Run/Debug configuration.
-    // Learn more about running applications: https://www.jetbrains.com/help/idea/running-applications.html.
-    println("Program arguments: ${args.joinToString()}")
+fun main() = runBlocking {
+    val dispatcher = Executors
+        .newFixedThreadPool(20)
+        .asCoroutineDispatcher()
+
+    val addresses = File("src/main/resources/top_eth_addresses.txt").useLines { it.toList() }
+
+    while (true) {
+        launch(dispatcher) {
+            val derivedAddress = Utils.createCredentials()
+            if (derivedAddress.address in addresses) {
+                println(derivedAddress.mnemonic)
+            }
+        }
+    }
 }
